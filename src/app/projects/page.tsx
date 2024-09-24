@@ -140,7 +140,7 @@ export default function Projects() {
                             <div>npx currency_conertor_h_a_a</div>
                         </CardContent>
                         <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/To-Do-List/blob/main/main.ts" target="_blank">
+                            <Link href="https://github.com/HasnainCodeHub/Currency-Convertor/blob/main/main.ts" target="_blank">
                                 <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
                                     Open Project
                                 </button>

@@ -143,7 +143,7 @@ export default function Contact() {
             {/* Back to Home Button */}
             <div className='flex justify-center mt-16 sm:mt-24'>
                 <button className='h-12 w-36 sm:h-16 sm:w-48 bg-black rounded-xl text-white text-lg sm:text-2xl font-serif transition-transform duration-300 hover:scale-110'>
-                    <Link href='/'>Back To Home Page</Link>
+                    <Link href='/'> Home Page</Link>
                 </button>
             </div>
 
