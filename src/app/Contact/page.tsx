@@ -72,7 +72,7 @@ export default function Contact() {
             {/* Contact Form Section */}
             <div className="flex flex-col items-center justify-center mt-16 sm:mt-24">
                 {submitted ? (
-                    <p className="text-green-600 font-bold text-2xl text-center">Thank you for contacting me! I'll get back to you soon.</p>
+                    <p className="text-yellow-500 font-bold text-2xl text-center">Thank you for contacting me! I'll get back to you soon.</p>
                 ) : (
                     <form onSubmit={handleSubmit} className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg space-y-6">
                         <div>
