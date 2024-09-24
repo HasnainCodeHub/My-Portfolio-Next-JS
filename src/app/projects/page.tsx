@@ -11,8 +11,8 @@ import {
 export default function Projects() {
     return (
         <main className='bg-cover bg-center bg-slate-50 h-auto'>
-            <div className="flex flex-col justify-center items-center px-4">
-                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mt-12 text-center">
+            <div className="flex flex-col justify-center items-center px-4 ">
+                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mt-12 text-center text-white bg-cyan-950 w-[100%] rounded-2xl">
                     Projects
                 </h1>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-6 text-center">
