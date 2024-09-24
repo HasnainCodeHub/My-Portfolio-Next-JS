@@ -1,25 +1,24 @@
-import BackImage from '../mainback.jpg';
+import BackImage from '../mainback.jpg'; // Ensure this image exists in your project
 
 function About() {
     return (
-        <main className='bg-cover bg-center h-full bg-slate-200' >
+        <main className='bg-cover bg-center h-full bg-slate-200'>
             <div className='flex flex-col justify-center items-center'>
                 {/* Responsive spacing for all devices */}
                 <div className="pt-12 sm:pt-16 lg:pt-24">
                     <h1 className='text-white text-4xl sm:text-6xl md:text-7xl lg:text-9xl font-bold text-center sm:w-[100%] lg:w-[100%] bg-cyan-950 rounded-2xl'>
                         About Me
                     </h1>
-                    
                 </div>
 
                 {/* Content Section */}
                 <div className="px-4 sm:px-8 lg:px-24 xl:px-48 mt-12 sm:mt-16 lg:mt-24">
-                    <div className=' text-lg sm:text-xl lg:text-2xl font-serif'>
+                    <div className='text-lg sm:text-xl lg:text-2xl font-serif'>
                         {/* Removed invalid nested p and used div */}
                         <div>
-                        Hello, I'm Hasnain Ali, a passionate and driven web developer with a strong background in creating dynamic, scalable, and responsive websites. With expertise in modern web technologies such as  
-                                       <span className='text-cyan-950 font-extrabold italic font-mono'> TypeScript, Next.js, Tailwind CSS, And Sanity CMS.</span>
-                        I bring to life seamless user experiences and high-performance web applications.
+                            Hello, I'm Hasnain Ali, a passionate and driven web developer with a strong background in creating dynamic, scalable, and responsive websites. With expertise in modern web technologies such as  
+                            <span className='text-cyan-950 font-extrabold italic font-mono'> TypeScript, Next.js, Tailwind CSS, And Sanity CMS.</span>
+                            I bring to life seamless user experiences and high-performance web applications.
                         </div>
 
                         <br />
@@ -53,11 +52,12 @@ function About() {
                         </div>
 
                         <br />
+                        
                         <h1 className='text-cyan-950 font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-6'>
                             Shandcn.ui:
                         </h1>
                         <div>
-                            I style my applications using Tailwind CSS, a utility-first CSS framework that empowers me to design visually appealing interfaces with minimal code. This approach leads to clean and efficient styling, resulting in responsive and modern user interfaces.
+                            I utilize Shandcn.ui to create visually appealing and user-friendly interfaces that enhance user experience.
                         </div>
 
                         <br />
