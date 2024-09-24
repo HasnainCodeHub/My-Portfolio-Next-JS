@@ -88,7 +88,7 @@ export default function Contact() {
             {/* Contact Form Section */}
             <div className='flex flex-col items-center justify-center mt-16 sm:mt-24'>
                 {submitted ? (
-                    <p className='text-green-600 font-bold text-2xl text-center'>Thank you for contacting me! I'll get back to you soon.</p>
+                    <p className='text-yellow-600 font-bold text-2xl text-center'>Thank you for contacting me! I'll get back to you soon.</p>
                 ) : (
                     <form onSubmit={handleSubmit} className='w-full max-w-lg bg-white p-8 rounded-lg shadow-lg space-y-6'>
                         <div>
@@ -126,13 +126,13 @@ export default function Contact() {
                                 onChange={handleInputChange}
                                 required
                                 rows={4}
-                                className='w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                className='w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-950'
                                 placeholder='Enter your message'
                             />
                         </div>
                         <button
                             type='submit'
-                            className='w-full py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors duration-300'
+                            className='w-full py-3 bg-cyan-950 text-white font-bold rounded-md hover:bg-cyan-700 transition-colors duration-300'
                         >
                             Send Message
                         </button>

@@ -38,7 +38,7 @@ export default function Home() {
               Tailwind CSS
             </li>
             <li className="text-2xl sm:text-3xl md:text-4xl font-bold transition-colors duration-300 hover:text-yellow-400">
-              Shardcn.UI
+              Shadcn.UI
             </li>
           </ul>
           
