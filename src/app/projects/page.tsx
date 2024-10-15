@@ -1,269 +1,196 @@
-import Link from 'next/link'
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card"
+// Import necessary modules and components
+'use client'; // For client-side rendering
+import { useState, useEffect } from 'react';
+import { createClient } from 'next-sanity';
+import { groq } from 'next-sanity';
+import Link from 'next/link';
+import imageUrlBuilder from '@sanity/image-url';
+import { Spinner } from '../components/spinner'; // Adjust the path as needed
 
+// Define the types for the project
+interface Project {
+  _id: string;
+  projectName: string;
+  description: string;
+  npmCommand?: string; // Optional because 'nextproject' might not have it
+  backgroundImage?: {
+    asset: {
+      _id: string;
+      url: string;
+    };
+  };
+  link: string;
+}
+
+// Sanity client configuration
+const sanityClient = createClient({
+  projectId: 'xtej4sdt', // Replace with your actual project ID
+  dataset: 'production', // Replace with your dataset name
+  apiVersion: '2024-01-01', // Use the current date
+  useCdn: true, // Set to false if you want to ensure fresh data
+});
+
+// Helper function to generate image URLs
+const builder = imageUrlBuilder(sanityClient);
+function urlFor(source: any) {
+  return builder.image(source).url();
+}
+
+// Projects component to fetch and display projects (both types)
 export default function Projects() {
-    return (
-        <main className='bg-cover bg-center bg-slate-50 h-auto'>
-            <div className="flex flex-col justify-center items-center px-4 ">
-                <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold mt-12 text-center text-white bg-cyan-950 w-[100%] rounded-2xl">
-                    Projects
-                </h1>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mt-6 text-center">
-                    TypeScript:
-                </h2>
-            </div>
+  const [tsProjects, setTsProjects] = useState<Project[]>([]); // Holds 'project' data
+  const [nextProjects, setNextProjects] = useState<Project[]>([]); // Holds 'nextproject' data
+  const [loading, setLoading] = useState(true); // Loading state
 
-            <div className="px-4 py-8">
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-                    {/* First card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>01 : Simple Calculator</div></CardTitle>
-                            <CardDescription>
-                                <div>CLI Based Simple Calculator Using Inquirer</div>
-                                <ul className="list-disc pl-5">
-                                    <li>Addition</li>
-                                    <li>Subtraction</li>
-                                    <li>Multiplication</li>
-                                    <li>Division</li>
-                                </ul>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx simple-calculator-with-hasnain-ali</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub?tab=repositories" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+  useEffect(() => {
+    // Function to fetch TypeScript and Next.js projects from Sanity
+    async function fetchProjects() {
+      setLoading(true); // Set loading to true before fetching
+      const tsResult: Project[] = await sanityClient.fetch(groq`
+        *[_type == 'project'] {
+          _id,
+          projectName,
+          description,
+          backgroundImage {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          link,
+          npmCommand
+        }
+      `);
 
-                    {/* Second Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>02 : Number Guessing Game</div></CardTitle>
-                            <CardDescription>
-                                <div>Console Interactive Number Guessing Game</div>
-                                <div>Guess Any Number Under 10 And Try Your Luck</div>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx guess-the-number-srz</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Number-Guessing-Game/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+      const nextResult: Project[] = await sanityClient.fetch(groq`
+        *[_type == 'nextproject'] {
+          _id,
+          projectName,
+          description,
+          backgroundImage {
+            asset -> {
+              _id,
+              url
+            }
+          },
+          link
+        }
+      `);
 
-                    {/* Third Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>03 : ATM Machine</div></CardTitle>
-                            <CardDescription>
-                                <ul className="list-disc pl-5">
-                                    <li>Cash Withdraw</li>
-                                    <li>Balance Inquiry</li>
-                                    <li>Fast Cash</li>
-                                </ul>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx atm-code-with-hasnain-srz</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/ATM-Machine/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+      setTsProjects(tsResult); // Set fetched TypeScript projects in state
+      setNextProjects(nextResult); // Set fetched Next.js projects in state
+      setLoading(false); // Set loading to false after fetching
+    }
 
-                    {/* Fourth Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>04 : Todo List</div></CardTitle>
-                            <CardDescription>
-                                <div>Manage Daily Todos</div>
-                                <ul className="list-disc pl-5">
-                                    <li>Add Task</li>
-                                    <li>Delete Task</li>
-                                </ul>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx to-do-list-h-a-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/To-Do-List/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+    // Initial fetch
+    fetchProjects();
 
-                    {/* Fifth Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>05 : Currency Converter</div></CardTitle>
-                            <CardDescription>
-                                <div>Convert Any Amount In Given List Currencies</div>
-                                <ul className="list-disc pl-5">
-                                    <li>USD</li>
-                                    <li>EUR</li>
-                                    <li>POUNDS</li>
-                                    <li>KUAITIDINAR</li>
-                                </ul>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx currency_conertor_h_a_a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Currency-Convertor/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+    // Set up a real-time listener for changes in 'project' and 'nextproject' documents
+    const subscription = sanityClient
+      .listen(`*[_type == "project" || _type == "nextproject"]`)
+      .subscribe(() => {
+        fetchProjects(); // Re-fetch projects on any change
+      });
 
-                    {/* Sixth card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>06 : Word Counter</div></CardTitle>
-                            <CardDescription><div>Type Any Sentence And Count How Many Words You Write</div></CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx word-counter-h-a-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Word-Counter/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+    // Clean up the listener on component unmount
+    return () => subscription.unsubscribe();
+  }, []);
+
+  return (
+    <main className="bg-gray-100 min-h-screen py-10 px-4">
+      {/* Render TypeScript Projects */}
+      <div className="p-4 w-full mx-auto max-w-[90%] lg:max-w-[120rem]">
+      <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-8xl font-bold mt-12 text-center text-white bg-cyan-950 w-[100%] rounded-2xl">
+      Projects</h1>
+      <br />
+        <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">TypeScript Projects</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+          {loading ? (
+            <Spinner /> // Show spinner while loading
+          ) : tsProjects.length === 0 ? (
+            <p>No TypeScript projects found.</p>
+          ) : (
+            tsProjects.map((project) => (
+              <div 
+                key={project._id} 
+                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+              >
+                {project.backgroundImage && (
+                  <img
+                    src={urlFor(project.backgroundImage.asset.url)}
+                    alt={project.projectName}
+                    className="rounded-lg mt-2 w-full h-40 object-cover hover:opacity-90 transition-opacity duration-300"
+                  />
+                )}
+                <div className="flex-grow p-4 hover:text-blue-500 transition-colors duration-300">
+                  <Link href={project.link} passHref target="_blank">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2 hover:underline">
+                      {project.projectName}
+                    </h2>
+                  </Link>
+                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  {project.npmCommand && (
+                    <p className="text-gray-700">
+                      <strong>NPM Command:</strong> {project.npmCommand}
+                    </p>
+                  )}
                 </div>
+                <Link href={project.link} passHref target="_blank">
+                  <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-300 w-full">
+                    View Project
+                  </button>
+                </Link>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
 
-                {/* Second Row of Cards */}
-                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10'>
-                    {/* Seventh Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>07 : Student Management System</div></CardTitle>
-                            <CardDescription>
-                                <div>Designed to Efficiently Manage Student Data and Academic Records</div>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx student-management-system-h-a-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Student-Management-System-/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
-
-                    {/* Eighth Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>08 : Text Based Adventure Game</div></CardTitle>
-                            <CardDescription>
-                                <div>A text-based adventure game is an interactive game where players navigate a fictional world through text commands.</div>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx text-based-adventure-game-h-a-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Text-Based-Adventure-Game/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
-
-                    {/* Ninth Card */}
-                    <Card className='h-auto w-full'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>09 : Quiz On Cars</div></CardTitle>
-                            <CardDescription>
-                                <div>Multiple Choice Questions testing your knowledge about cars. You have 10 questions—answer them and get immediate feedback!</div>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx quiz-h-a-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Quiz/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
-
-                    {/* Tenth Card */}
-                    <Card className='h-auto w-full lg:ml-[635px] sm:ml-[10px]'>
-                        <CardHeader>
-                            <CardTitle><div className='text-xl sm:text-2xl'>10 : Countdown Timer</div></CardTitle>
-                            <CardDescription>
-                                <div>Time Management</div>
-                                <ul className="list-disc pl-5">
-                                    <li>Minutes</li>
-                                    <li>Seconds</li>
-                                </ul>
-                                <div>Functionality</div>
-                                <ul className="list-disc pl-5">
-                                    <li>Start Timer</li>
-                                    <li>Reset</li>
-                                </ul>
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div>Npm Command To Run Project:</div>
-                            <div>npx countdown-timer-h-a</div>
-                        </CardContent>
-                        <CardFooter>
-                            <Link href="https://github.com/HasnainCodeHub/Countdown-Timer/blob/main/main.ts" target="_blank">
-                                <button className="bg-black rounded-xl h-12 sm:h-14 text-white text-lg sm:text-2xl font-serif p-2 transition-transform duration-300 hover:scale-110">
-                                    Open Project
-                                </button>
-                            </Link>
-                        </CardFooter>
-                    </Card>
+      {/* Render Next.js Projects */}
+      <div className="p-4 w-full mx-auto max-w-[90%] lg:max-w-[120rem] mt-10">
+        <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">Next.js Projects</h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+          {loading ? (
+            <Spinner /> // Show spinner while loading
+          ) : nextProjects.length === 0 ? (
+            <p>No Next.js projects found.</p>
+          ) : (
+            nextProjects.map((project) => (
+              <div 
+                key={project._id} 
+                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+              >
+                {project.backgroundImage && (
+                  <img
+                    src={urlFor(project.backgroundImage.asset.url)}
+                    alt={project.projectName}
+                    className="rounded-lg mt-2 w-full h-40 object-cover hover:opacity-90 transition-opacity duration-300"
+                  />
+                )}
+                <div className="flex-grow p-4 hover:text-blue-500 transition-colors duration-300">
+                  <Link href={project.link} passHref target="_blank">
+                    <h2 className="text-2xl font-bold text-gray-800 mb-2 hover:underline">
+                      {project.projectName}
+                    </h2>
+                  </Link>
+                  <p className="text-gray-600 mb-4">{project.description}</p>
                 </div>
-            </div>
-        </main>
-    )
+                <Link href={project.link} passHref target="_blank">
+                  <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-300 w-full">
+                    Visit Project Live
+                  </button>
+                </Link>
+              </div>
+              
+            ))
+          )}
+        </div>
+        <div className='text-center'>
+        <h1 className='font-bold text-4xl text-red-600'>More Projects Comming Soon</h1>
+        </div>
+      </div>
+    </main>
+  );
 }
