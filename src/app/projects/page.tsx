@@ -1,11 +1,12 @@
 // Import necessary modules and components
-'use client'; // For client-side rendering
-import { useState, useEffect } from 'react';
-import { createClient } from 'next-sanity';
-import { groq } from 'next-sanity';
-import Link from 'next/link';
-import imageUrlBuilder from '@sanity/image-url';
-import { Spinner } from '../components/spinner'; // Adjust the path as needed
+"use client"; // For client-side rendering
+import { useState, useEffect } from "react";
+import { createClient } from "next-sanity";
+import { groq } from "next-sanity";
+import Link from "next/link";
+import imageUrlBuilder from "@sanity/image-url";
+import { Spinner } from "../components/spinner"; // Adjust the path as needed
+import { motion } from "framer-motion"; // Import Framer Motion
 
 // Define the types for the project
 interface Project {
@@ -24,9 +25,9 @@ interface Project {
 
 // Sanity client configuration
 const sanityClient = createClient({
-  projectId: 'xtej4sdt', // Replace with your actual project ID
-  dataset: 'production', // Replace with your dataset name
-  apiVersion: '2024-01-01', // Use the current date
+  projectId: "xtej4sdt", // Replace with your actual project ID
+  dataset: "production", // Replace with your dataset name
+  apiVersion: "2024-01-01", // Use the current date
   useCdn: true, // Set to false if you want to ensure fresh data
 });
 
@@ -35,6 +36,12 @@ const builder = imageUrlBuilder(sanityClient);
 function urlFor(source: any) {
   return builder.image(source).url();
 }
+
+// Framer Motion animation variants
+const fadeIn = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 // Projects component to fetch and display projects (both types)
 export default function Projects() {
@@ -100,95 +107,118 @@ export default function Projects() {
     <main className="bg-gray-100 min-h-screen py-10 px-4">
       {/* Render TypeScript Projects */}
       <div className="p-4 w-full mx-auto max-w-[90%] lg:max-w-[120rem]">
-      <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-8xl font-bold mt-12 text-center text-white bg-cyan-950 w-[100%] rounded-2xl">
-      Projects</h1>
-      <br />
+        <motion.h1
+          className="text-4xl sm:text-6xl md:text-6xl lg:text-8xl font-bold mt-12 text-center text-white bg-cyan-950 w-[100%] rounded-2xl"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          Projects
+        </motion.h1>
+        <br />
         <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">TypeScript Projects</h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {loading ? (
             <Spinner /> // Show spinner while loading
           ) : tsProjects.length === 0 ? (
             <p>No TypeScript projects found.</p>
           ) : (
             tsProjects.map((project) => (
-              <div 
-                key={project._id} 
+              <motion.div
+                key={project._id}
                 className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={fadeIn} // Applying animation on scroll
+                whileHover={{ scale: 1.05 }} // Scale effect on hover
+                transition={{ duration: 0.3 }} // Transition duration
               >
                 {project.backgroundImage && (
-                  <img
+                  <motion.img
                     src={urlFor(project.backgroundImage.asset.url)}
                     alt={project.projectName}
                     className="rounded-lg mt-2 w-full h-40 object-cover hover:opacity-90 transition-opacity duration-300"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                   />
                 )}
-                <div className="flex-grow p-4 hover:text-blue-500 transition-colors duration-300">
+                <div className="flex-grow p-4 flex flex-col"> {/* Flex column to keep content layout */}
                   <Link href={project.link} passHref target="_blank">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2 hover:underline">
-                      {project.projectName}
-                    </h2>
+                    <h2 className="text-lg font-semibold hover:text-blue-500 transition-colors duration-300">{project.projectName}</h2>
                   </Link>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <p className="text-sm text-gray-600">{project.description}</p>
                   {project.npmCommand && (
-                    <p className="text-gray-700">
-                      <strong>NPM Command:</strong> {project.npmCommand}
+                    <p className="mt-2 text-xs text-gray-500">
+                      Command: <code>{project.npmCommand}</code>
                     </p>
                   )}
                 </div>
+                {/* View Project Button fixed at the end */}
                 <Link href={project.link} passHref target="_blank">
-                  <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-300 w-full">
+                  <motion.button
+                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                    whileHover={{ scale: 1.05 }} // Scale effect on hover
+                    transition={{ duration: 0.3 }}
+                  >
                     View Project
-                  </button>
+                  </motion.button>
                 </Link>
-              </div>
+              </motion.div>
             ))
           )}
         </div>
-      </div>
 
-      {/* Render Next.js Projects */}
-      <div className="p-4 w-full mx-auto max-w-[90%] lg:max-w-[120rem] mt-10">
-        <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">Next.js Projects</h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
+        {/* Render Next.js Projects */}
+        <h2 className="text-3xl font-semibold text-gray-700 mt-12 mb-6 text-center">Next.js Projects</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
           {loading ? (
             <Spinner /> // Show spinner while loading
           ) : nextProjects.length === 0 ? (
             <p>No Next.js projects found.</p>
           ) : (
             nextProjects.map((project) => (
-              <div 
-                key={project._id} 
+              <motion.div
+                key={project._id}
                 className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={fadeIn} // Applying animation on scroll
+                whileHover={{ scale: 1.05 }} // Scale effect on hover
+                transition={{ duration: 0.3 }} // Transition duration
               >
                 {project.backgroundImage && (
-                  <img
+                  <motion.img
                     src={urlFor(project.backgroundImage.asset.url)}
                     alt={project.projectName}
                     className="rounded-lg mt-2 w-full h-40 object-cover hover:opacity-90 transition-opacity duration-300"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
                   />
                 )}
-                <div className="flex-grow p-4 hover:text-blue-500 transition-colors duration-300">
+                <div className="flex-grow p-4 flex flex-col"> {/* Flex column to keep content layout */}
                   <Link href={project.link} passHref target="_blank">
-                    <h2 className="text-2xl font-bold text-gray-800 mb-2 hover:underline">
-                      {project.projectName}
-                    </h2>
+                    <h2 className="text-lg font-semibold hover:text-blue-500 transition-colors duration-300">{project.projectName}</h2>
                   </Link>
-                  <p className="text-gray-600 mb-4">{project.description}</p>
+                  <p className="text-sm text-gray-600">{project.description}</p>
                 </div>
+                {/* View Project Live Button fixed at the end */}
                 <Link href={project.link} passHref target="_blank">
-                  <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg transition-colors duration-300 w-full">
-                    Visit Project Live
-                  </button>
+                  <motion.button
+                    className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                    whileHover={{ scale: 1.05 }} // Scale effect on hover
+                    transition={{ duration: 0.3 }}
+                  >
+                    View Project Live
+                  </motion.button>
                 </Link>
-              </div>
-              
+              </motion.div>
             ))
           )}
-        </div>
-        <div className='text-center'>
-        <h1 className='font-bold text-4xl text-red-600'>More Projects Comming Soon</h1>
         </div>
       </div>
     </main>

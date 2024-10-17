@@ -1,9 +1,10 @@
-'use client'
-import { useState, FormEvent } from 'react';
+'use client';
+import { useState, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { IoIosMail } from 'react-icons/io';
 import { FaPhone } from 'react-icons/fa6';
 import { FaFacebook, FaLinkedin, FaInstagramSquare } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 interface FormData {
     name: string;
@@ -19,6 +20,8 @@ export default function Contact() {
     });
 
     const [submitted, setSubmitted] = useState<boolean>(false);
+    const [formVisible, setFormVisible] = useState<boolean>(false);
+    const [thankYouVisible, setThankYouVisible] = useState<boolean>(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
@@ -46,6 +49,37 @@ export default function Contact() {
             console.error('Error:', error);
         }
     };
+
+    // Check if an element is in the viewport
+    const isElementInViewport = (element: HTMLElement) => {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        );
+    };
+
+    const handleScroll = () => {
+        const formSection = document.querySelector('#contact-form');
+        const thankYouSection = document.querySelector('#thank-you-note');
+
+        if (formSection && isElementInViewport(formSection as HTMLElement)) {
+            setFormVisible(true);
+        }
+
+        if (thankYouSection && isElementInViewport(thankYouSection as HTMLElement)) {
+            setThankYouVisible(true);
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Check visibility on mount
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
 
     return (
         <main className='bg-cover bg-center min-h-screen bg-cyan-950 py-8 px-4 sm:px-8 lg:px-24'>
@@ -88,9 +122,23 @@ export default function Contact() {
             {/* Contact Form Section */}
             <div className='flex flex-col items-center justify-center mt-16 sm:mt-24'>
                 {submitted ? (
-                    <p className='text-yellow-600 font-bold text-2xl text-center'>Thank you for contacting me! I'll get back to you soon.</p>
+                    <motion.div
+                        id='thank-you-note'
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={thankYouVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <p className='text-yellow-600 font-bold text-2xl text-center'>Thank you for contacting me! I'll get back to you soon.</p>
+                    </motion.div>
                 ) : (
-                    <form onSubmit={handleSubmit} className='w-full max-w-lg bg-white p-8 rounded-lg shadow-lg space-y-6'>
+                    <motion.form
+                        id='contact-form'
+                        onSubmit={handleSubmit}
+                        className='w-full max-w-lg bg-white p-8 rounded-lg shadow-lg space-y-6'
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={formVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5 }}
+                    >
                         <div>
                             <label htmlFor='name' className='block text-lg font-medium text-gray-700'>Your Name</label>
                             <input
@@ -136,7 +184,7 @@ export default function Contact() {
                         >
                             Send Message
                         </button>
-                    </form>
+                    </motion.form>
                 )}
             </div>
 
@@ -148,11 +196,17 @@ export default function Contact() {
             </div>
 
             {/* Thank You Note */}
-            <p className='italic font-extrabold text-white text-xl sm:text-2xl md:text-3xl text-center mt-12 sm:mt-16'>
+            <motion.p
+                id='thank-you-note'
+                className='italic font-extrabold text-white text-xl sm:text-2xl md:text-3xl text-center mt-12 sm:mt-16'
+                initial={{ opacity: 0, y: 20 }}
+                animate={thankYouVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.5 }}
+            >
                 Thanks for visiting my portfolio. I hope you enjoyed your visit and I look forward to hearing from you soon.
                 <br />
                 Have a great day!
-            </p>
+            </motion.p>
         </main>
     );
 }
