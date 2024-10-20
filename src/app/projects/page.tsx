@@ -220,6 +220,7 @@ export default function Projects() {
             ))
           )}
         </div>
+        <h1 className="text-6xl text-red-600 text-center font-bold" >More Projects Comming Soon</h1>
       </div>
     </main>
   );
