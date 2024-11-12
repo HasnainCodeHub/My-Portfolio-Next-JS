@@ -5,7 +5,7 @@ import { createClient } from "next-sanity";
 import { groq } from "next-sanity";
 import Link from "next/link";
 import imageUrlBuilder from "@sanity/image-url";
-import { Spinner } from "../components/spinner"; // Adjust the path as needed
+import { Spinner } from "../components/spinner"; 
 import { motion } from "framer-motion"; // Import Framer Motion
 
 // Define the types for the project
