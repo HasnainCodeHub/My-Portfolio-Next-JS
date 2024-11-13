@@ -48,7 +48,7 @@ export default function Main() {
           <div className="flex justify-center mt-10">
             <IoOpen
               size={45}
-              className="ml-4 transition-transform duration-300 ease-out hover:scale-125 mt-2 text-gradient-to-r from-yellow-400 via-red-400 to-pink-500"
+              className="ml-4 transition-transform duration-300 ease-out hover:scale-125 mt-2 text-gradient-to-r text-black from-yellow-400 via-red-400 to-pink-500"
             />
             <Link href="https://static-resume-seven-beta.vercel.app/" target="_blank">
               <motion.div
