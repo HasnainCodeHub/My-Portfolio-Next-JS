@@ -24,6 +24,15 @@ function Navbar() {
     setIsOpen(!isOpen);
   };
 
+  // Define navigation links with correct paths
+  const navLinks = [
+    { name: "Home", path: "/" },
+    { name: "Projects", path: "/projects" },
+    { name: "Services", path: "/services" },
+    { name: "About Me", path: "/About" }, // Ensure this matches your folder structure
+    { name: "Contact Us", path: "/Contact" }, // Ensure this matches your folder structure
+  ];
+
   return (
     <main>
       {/* Main Navigation Bar */}
@@ -44,8 +53,8 @@ function Navbar() {
             <Image
               src={Logo} // Use the correct logo image
               alt="Logo"
-              width={40}
-              height={40}
+              width={100}
+              height={100}
               className="mr-2"
               priority
             />
@@ -63,14 +72,14 @@ function Navbar() {
 
         {/* Navigation Links for Large Screens */}
         <div className="hidden md:flex gap-8">
-          {["Home", "Projects", "Services", "About Me", "Contact Us"].map((link) => (
+          {navLinks.map((link) => (
             <motion.button
-              key={link}
+              key={link.name}
               className="rounded-3xl transition-all duration-300 hover:text-blue-400 text-white"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link href={`/${link.replace(" ", "").toLowerCase()}`}>{link}</Link>
+              <Link href={link.path}>{link.name}</Link>
             </motion.button>
           ))}
         </div>
@@ -87,15 +96,15 @@ function Navbar() {
             variants={slideIn}
             transition={{ type: "spring", stiffness: 60 }}
           >
-            {["Home", "Projects", "Services", "About Me", "Contact Us"].map((link) => (
+            {navLinks.map((link) => (
               <motion.button
-                key={link}
+                key={link.name}
                 className="rounded-3xl transition-all duration-300 hover:text-blue-400 text-white text-lg mb-4"
                 onClick={toggleMenu}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link href={`/${link.replace(" ", "").toLowerCase()}`}>{link}</Link>
+                <Link href={link.path}>{link.name}</Link>
               </motion.button>
             ))}
           </motion.div>

@@ -1,4 +1,3 @@
-// Import necessary modules and components
 "use client"; // For client-side rendering
 import { useState, useEffect } from "react";
 import { createClient } from "next-sanity";
@@ -118,7 +117,7 @@ export default function Projects() {
         <br />
         <h2 className="text-3xl font-semibold text-gray-700 mb-6 text-center">TypeScript Projects</h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
           {loading ? (
             <Spinner /> // Show spinner while loading
           ) : tsProjects.length === 0 ? (
@@ -127,13 +126,13 @@ export default function Projects() {
             tsProjects.map((project) => (
               <motion.div
                 key={project._id}
-                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col min-w-[250px] max-w-[300px] h-full"
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                variants={fadeIn} // Applying animation on scroll
-                whileHover={{ scale: 1.05 }} // Scale effect on hover
-                transition={{ duration: 0.3 }} // Transition duration
+                variants={fadeIn}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               >
                 {project.backgroundImage && (
                   <motion.img
@@ -145,7 +144,7 @@ export default function Projects() {
                     transition={{ duration: 0.5 }}
                   />
                 )}
-                <div className="flex-grow p-4 flex flex-col"> {/* Flex column to keep content layout */}
+                <div className="flex-grow p-4 flex flex-col">
                   <Link href={project.link} passHref target="_blank">
                     <h2 className="text-lg font-semibold hover:text-blue-500 transition-colors duration-300">{project.projectName}</h2>
                   </Link>
@@ -156,11 +155,10 @@ export default function Projects() {
                     </p>
                   )}
                 </div>
-                {/* View Project Button fixed at the end */}
                 <Link href={project.link} passHref target="_blank">
                   <motion.button
                     className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                    whileHover={{ scale: 1.05 }} // Scale effect on hover
+                    whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   >
                     View Project
@@ -173,7 +171,7 @@ export default function Projects() {
 
         {/* Render Next.js Projects */}
         <h2 className="text-3xl font-semibold text-gray-700 mt-12 mb-6 text-center">Next.js Projects</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
           {loading ? (
             <Spinner /> // Show spinner while loading
           ) : nextProjects.length === 0 ? (
@@ -182,13 +180,13 @@ export default function Projects() {
             nextProjects.map((project) => (
               <motion.div
                 key={project._id}
-                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col h-full"
+                className="border border-gray-300 shadow-lg p-4 rounded-lg bg-white flex flex-col min-w-[250px] max-w-[300px] h-full"
                 initial="hidden"
                 animate="visible"
                 exit="hidden"
-                variants={fadeIn} // Applying animation on scroll
-                whileHover={{ scale: 1.05 }} // Scale effect on hover
-                transition={{ duration: 0.3 }} // Transition duration
+                variants={fadeIn}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.3 }}
               >
                 {project.backgroundImage && (
                   <motion.img
@@ -200,17 +198,16 @@ export default function Projects() {
                     transition={{ duration: 0.5 }}
                   />
                 )}
-                <div className="flex-grow p-4 flex flex-col"> {/* Flex column to keep content layout */}
+                <div className="flex-grow p-4 flex flex-col">
                   <Link href={project.link} passHref target="_blank">
                     <h2 className="text-lg font-semibold hover:text-blue-500 transition-colors duration-300">{project.projectName}</h2>
                   </Link>
                   <p className="text-sm text-gray-600">{project.description}</p>
                 </div>
-                {/* View Project Live Button fixed at the end */}
                 <Link href={project.link} passHref target="_blank">
                   <motion.button
                     className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                    whileHover={{ scale: 1.05 }} // Scale effect on hover
+                    whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.3 }}
                   >
                     View Project Live
@@ -220,7 +217,8 @@ export default function Projects() {
             ))
           )}
         </div>
-        <h1 className="text-6xl text-red-600 text-center font-bold" >More Projects Comming Soon</h1>
+
+        <h1 className="text-6xl text-red-600 text-center font-bold">More Projects Coming Soon</h1>
       </div>
     </main>
   );
