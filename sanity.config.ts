@@ -10,7 +10,7 @@ import { apiVersion, dataset, projectId } from './src/sanity/env';
 import { schema } from './src/sanity/schemaTypes';
 import { structure } from './src/sanity/structure';
 
-export default defineConfig({
+const config = defineConfig({
   basePath: '/studio',
   projectId,
   dataset,
@@ -21,3 +21,4 @@ export default defineConfig({
     visionTool({ defaultApiVersion: apiVersion }),
   ],
 });
+export default config;
