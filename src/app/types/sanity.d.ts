@@ -14,4 +14,8 @@ declare module 'sanity' {
   // Add additional exports if needed
   export function defineType(args: any): any; // Adjust this as necessary
   export function defineConfig(args: any): any; // Add this if you find it exists
+  export function StructureResolver(args: any): any; // Add this if you find it exists
 }
+
+
+

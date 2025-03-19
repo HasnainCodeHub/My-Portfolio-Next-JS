@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/types/**/*.d.ts" // Add this line to include your custom type definitions
+    "src/app/types/**/*.d.ts", // Add this line to include your custom type definitions
+    "src/app/types/**/*next-sanity.d.ts"
   ],
   "exclude": ["node_modules"]
 }
